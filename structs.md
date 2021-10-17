@@ -75,6 +75,76 @@ let origin = Point(0,0,0);
 ```
 Each structs defined is its own type although sometimes the values on them and even the data types could be identical 
 
+### Method Syntax
+
+Methods are close to functions, since they are declared with the fn keyword and can have parameters and return values however they defer from functions in the context they are 
+defined within, which is the same context as the struct and whose first parameter is always self which is an instance of the struct the method is being called on
+
+another way of writing the example from this chapter could be
+
+```rust 
+#[derive(Debug)]
+struct Rectangle {
+  width: u32,
+  height: u32,
+}
+
+impl Rectangle {
+  fn area(&self) -> u32 {
+    self.width * self.height
+  }
+}
+fn main() {
+let rect1 = Rectangle {
+  width: 30,
+  height: 50,
+};
+println!("The area of the rectangle is {} square pixels",rect1.area());
+}
+```
+
+To define the function within the context of Rectangle we start an impl(Implementation) block, then move the area function within the impl curl braces and change the first
+parameter to self in main we declared rect1 and we are passing it as an argument to the area function 
+
+This is similar to how methods work in C# you first spawn an instance of the object and then you can call all of its methods
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
