@@ -31,6 +31,236 @@ A package can contain multiple binary crates by placing files in the src/bin dir
 
 Modules let us organize code and control the privacy of items, which means whether an item is public(can be used outside the code) or private (in an internal implementation)
 
+```rust
+mod front_of_house {
+  mod hosting {
+    fn add_to_waitlist(){}
+    fn seat_at_table() {}
+
+  }
+mod serving {
+  fn take_order() {}
+  fn serve_order() {}
+  fn take_payment(){}
+}
+
+}
+```
+
+We define a module by using the mod keyword, and then specify the name of the module, inside of the module we can have another modules
+
+
+### Paths for referring to an item in a Module tree
+
+To show Rust where to find an item in a module tree, we use a path in the same way we use a path when navigating the fs. If we want to call a function we need to know its path
+
+
+
+```rust
+mod front_of_house {
+  pub mod hosting {
+    pub fn add_to_waitlist(){}
+
+  }
+}
+
+pub fn eat_at_restaurant(){
+  crate::front_of_house::hosting::add_to_waitlist(); //This is how you call the function add_to_waitlist using its absolut path
+  front_of_house::hosting::add_to_waitlist(); // This is how you call the function add_to_waitlist using its relative path
+}
+```
+Take into account that this will let us compile the code because the specific function we are calling from our public function is also public
+
+Another way of doing this would be 
+
+```rust
+fn serve_order() {}
+
+mod back_of_house {
+    fn fix_incorrect_order() {
+        cook_order();
+        super::serve_order();
+    }
+
+    fn cook_order() {}
+}
+
+```
+the super keyword constructs the relative path as well its like starting the file system path with .. 
+
+### Bringing Paths into Scope with the use keyword
+
+We can bring a path into the scope once instead of repeating the name of the module 
+
+for example
+
+  ```rust
+  mod front_of_house{
+    pub mod hosting {
+      pub fn add_to_waitlist(){}
+    }
+  }
+
+  use crate::front_of_house::hosting;
+  pub fn eat_at_restaurant(){
+    hosting::add_to_waitlist();
+    hosting::add_to_waitlist();
+    hosting::add_to_waitlist();
+  }
+
+  ```
+
+Bringing the parent path to the scope is the idiomatic way in rust of calling the function we could've used 
+```rust 
+use crate::front_of_house:hosting::add_to_waitlist;
+```
+
+There is another solution to the problem of bringing 2 types of the same name into the same scope with use, and its by using the as keyword, this is used so we wont have problems
+at compile time due to 2 local variables being called the same 
+
+```rust
+use std::fmt::Result;
+use std::io::Result as IoResult;
+
+fn function1() -> Result {
+    // --snip--
+    Ok(())
+}
+
+fn function2() -> IoResult<()> {
+    // --snip--
+    Ok(())
+}
+
+```
+
+Re exporting names with pub use
+
+
+To enable code that calls our code to refer to the name we brought into the scope we can combine pub and use
+
+
+```rust
+pub use crate::front_of_house::hostings;
+```
+
+We can also use nested paths to clean up large use lists
+
+```rust
+use std::cmp::Ordering;
+use std::io;
+use std::io::Write;
+
+//would be better to use
+
+use std::{cmp::Ordering, io};
+use std::io::{self, Write};
+use std::collections::*; //This is known as the glob parameter it brings everything under Collections into the scope
+```
+
+When working with modules from different files we use mod name;
+
+```rust 
+mod front_of_house;
+
+pub use crate::front_of_house::hosting;
+
+pub fn eat_at_restaurant() {
+    hosting::add_to_waitlist();
+    hosting::add_to_waitlist();
+    hosting::add_to_waitlist();
+}
+
+
+```
+That way we tell rust to load the module front_of_house from another file with the same name as the module
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
